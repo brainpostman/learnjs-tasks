@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let n = prompt("Введите натуральное число от 2:", "10");
+        let result = "2 ";
+        outer:
+        for (let i = 3; i <= n; i += 2) {
+            for (let j = 2; j < i; j++) {
+                if (i % j === 0) {
+                    continue outer;
+                }
+            }
+            result += `${i} `;
+        }
+        alert(result);
+    </script>
+</body>
+</html>
