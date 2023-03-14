@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 2000px;
+        }
+
+        #prompt-form {
+            display: inline-block;
+            padding: 5px 5px 5px 70px;
+            width: 200px;
+            border: 1px solid black;
+            background: white url(https://en.js.cx/clipart/prompt.png) no-repeat left 5px;
+            vertical-align: middle;
+        }
+
+        #prompt-form-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+        }
+
+        #prompt-form-container:before {
+            display: inline-block;
+            height: 100%;
+            content: '';
+            vertical-align: middle;
+        }
+
+        #cover-div {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9000;
+            width: 100%;
+            height: 100%;
+            background-color: gray;
+            opacity: 0.3;
+        }
+
+        #prompt-form input[name="text"] {
+            display: block;
+            margin: 5px;
+            width: 180px;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="get-form">Show form</button>
+
+    <script>
+        document.getElementById('get-form').onclick = () => {
+            showPrompt("Введите что-нибудь<br>...умное :)", function (value) {
+                alert(value);
+            });
+        }
+
+        function showPrompt(html, callback) {
+            let coverDiv = document.createElement('div');
+            coverDiv.id = 'cover-div';
+            document.body.style.overflowY = 'hidden';
+            document.body.append(coverDiv);
+
+            let div = document.createElement('div');
+            div.id = 'prompt-form-container';
+            let formStr = `<form id="prompt-form">
+                            <div id="prompt-message"></div>
+                            <input name="text" type="text">
+                            <input type="submit" value="Ok">
+                            <input type="button" name="cancel" value="Отмена">
+                            </form>`
+            div.insertAdjacentHTML('afterbegin', formStr);
+            document.body.append(div);
+            let form = div.children[0];
+            form.querySelector('#prompt-message').innerHTML = html;
+            handleFormEvents(form, html, callback);
+        }
+
+        function handleFormEvents(form, html, callback) {
+            form.text.focus();
+
+            function finish(value) {
+                callback(value);
+                document.onkeydown = null;
+                document.getElementById('cover-div').remove();
+                document.getElementById('prompt-form-container').remove();
+            }
+
+            form.onsubmit = () => {
+                let value = form.text.value;
+                if (value == '') return false;
+                finish(value);
+                return false;
+            }
+
+            form.cancel.onclick = () => {
+                finish(null);
+            }
+
+            document.onkeydown = function (e) {
+                if (e.key == 'Escape') {
+                    finish(null);
+                }
+            };
+
+            let lastElem = form.elements[form.elements.length - 1];
+            let firstElem = form.elements[0];
+
+            lastElem.onkeydown = function (e) {
+                if (e.key == 'Tab' && !e.shiftKey) {
+                    firstElem.focus();
+                    return false;
+                }
+            };
+
+            firstElem.onkeydown = function (e) {
+                if (e.key == 'Tab' && e.shiftKey) {
+                    lastElem.focus();
+                    return false;
+                }
+            };
+
+        }
+    </script>
+</body>
+
+</html>

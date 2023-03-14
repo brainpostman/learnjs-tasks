@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 4px;
+        }
+
+        th {
+            cursor: pointer;
+        }
+
+        th:hover {
+            background: yellow;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table id="grid">
+        <thead>
+            <tr>
+                <th data-type="number">Возраст</th>
+                <th data-type="string">Имя</th>
+                <th data-type="string">Фамилия</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>5</td>
+                <td>Вася</td>
+                <td>Сидоров</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Петя</td>
+                <td>Петров</td>
+            </tr>
+            <tr>
+                <td>12</td>
+                <td>Женя</td>
+                <td>Левакин</td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>Маша</td>
+                <td>Цветкова</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Илья</td>
+                <td>Ушин</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        function getSortCallback(sortType, column) {
+            switch (sortType) {
+                case "number": {
+                    return function (rowA, rowB) {
+                        let a = rowA.cells[column].innerHTML;
+                        let b = rowB.cells[column].innerHTML;
+                        return a - b;
+                    }
+                    break;
+                }
+                case "string": {
+                    return function (rowA, rowB) {
+                        let a = rowA.cells[column].innerHTML;
+                        let b = rowB.cells[column].innerHTML;
+                        return (a > b) ? 1 : -1;
+                    }
+                }
+            }
+        }
+
+        function tableSort(event) {
+            let sortType = event.target.dataset.type;
+            if (sortType == undefined) {
+                return;
+            }
+            let column = event.target.cellIndex;
+            let sortCallback = getSortCallback(sortType, column);
+            let tableBody = grid.querySelector('tbody');
+            let dataRows = Array.from(tableBody.rows);
+            dataRows.sort(sortCallback);
+            tableBody.append(...dataRows);
+        }
+        document.addEventListener("click", tableSort);
+    </script>
+
+</body>
+
+</html>

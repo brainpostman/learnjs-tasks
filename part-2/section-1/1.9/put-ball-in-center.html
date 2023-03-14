@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <style>
+        #field {
+            width: 200px;
+            border: 10px groove black;
+            background-color: #00FF00;
+            position: relative;
+        }
+
+        #ball {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="field">
+        <img src="https://en.js.cx/clipart/ball.svg" id="ball"> . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+        . . . . . . . . . . . . . . . . . . . . . .
+    </div>
+    <script>
+        let ballRadius = Math.round(ball.offsetWidth / 2);
+        console.log(ballRadius)
+        let topPadding = Math.round(field.clientHeight / 2) - ballRadius;
+        console.log(topPadding);
+        let leftPadding = Math.round(field.clientWidth / 2) - ballRadius;
+        console.log(leftPadding);
+        ball.style.top = topPadding + 'px';
+        ball.style.left = leftPadding + 'px';
+    </script>
+
+</body>
+
+</html>
